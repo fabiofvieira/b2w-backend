@@ -15,6 +15,7 @@ consign()
     .then('./config/db.js')
     .then('./app/models')
     .then('./app/services')
+    .then('./app/repositories')
     .then('./app/controllers')
     .into(app);
 
