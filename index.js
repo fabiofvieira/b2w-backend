@@ -1,5 +1,5 @@
 var app = require('./config/server');
-
-app.listen(80, function() {
-    console.log('Servidor Ligado');
+const server_port = 8080;
+app.listen(server_port, function() {
+    console.log('Servidor Online');
 });
