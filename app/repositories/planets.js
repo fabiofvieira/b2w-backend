@@ -7,37 +7,37 @@ module.exports.listPlanets = function()
     return Planet.find();
 }
 
-module.exports.insertPlanet = function(data) 
+module.exports.insertPlanet = async function(data) 
 {
     data.apparitions = 0;
-    SWApi
-        .getPlanet(data.name)
-        .then(r => {
-            if(r.data.count == 1)
-                data.apparitions = r.data.results[0].films.length;
-                return Planet.create({
-                    name: data.name + ' rand ' + parseInt(Math.random() * 1000),
-                    terrain: data.terrain,
-                    climate: data.climate,
-                    apparitions: data.apparitions
-                });
-        })
-        .catch(err => json.sendStatus(500));
+        await SWApi
+            .getPlanet(data.name)
+            .then(r => {
+                if(r.data.count == 1)
+                    data.apparitions = r.data.results[0].films.length;
+            })
+            .catch(err => res.sendStatus(500));
+    
+    return Planet.create({
+        name: data.name,
+        terrain: data.terrain,
+        climate: data.climate,
+        apparitions: data.apparitions
+    });
 }
 
 module.exports.deletePlanet = function(id) 
 {
-    return Planet.delete({_id: new ObjectId(id)});
+    return Planet.remove({_id: new ObjectId(id)});
 }
 
 module.exports.findBy = function(field, value) 
 {
-    var query = {}
     if(field == '_id') {
-        query[field] = new ObjectId(value);
-    } else if(field == 'nome') {
-        query[field] = new RegExp("^" + value + "$", "i");
+        return Planet.findOne({_id: new ObjectId(value)});
+    } else if(field == 'name') {
+        return Planet.find({name: new RegExp("^" + value + "$", "i")});
+    } else if(field == 'exact_name') {
+        return Planet.findOne({name: field});
     }
-
-    return Planet.findOne(query);
 }
