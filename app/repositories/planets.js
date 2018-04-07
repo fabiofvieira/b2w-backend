@@ -16,7 +16,7 @@ module.exports.insertPlanet = async function(data)
                 if(r.data.count == 1)
                     data.apparitions = r.data.results[0].films.length;
             })
-            .catch(err => res.sendStatus(500));
+            .catch(err => res.status(500).json({success:false, message: 'Não foi possivel coletar informação do SWAPI'}));
     
     return Planet.create({
         name: data.name,
