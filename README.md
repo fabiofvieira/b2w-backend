@@ -12,3 +12,8 @@
 <li>npm install</li>
 <li>npm start</li>
 </ul>
+
+### Teste
+<ul>
+<li>npm test</li>
+</ul>

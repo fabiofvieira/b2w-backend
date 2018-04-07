@@ -6,6 +6,8 @@ const query = require('querystring');
 
 const url = 'http://localhost:8080/planetas';
 
+const cTimeout = 60000;
+
 describe('Routes', () => {
     var Planet = {};
     it('create', (done) => {
@@ -19,11 +21,11 @@ describe('Routes', () => {
         .expect(200)
         .end((err, res) => {
             if(!('success' in res.body)) throw new Error('Faltando resposta padrão de sucesso');
-            if(!('data' in res.body)) throw new Error('Faltando resposta padrao para dados');
+            if(!('data' in res.body) && res.body.success == true) throw new Error('Faltando resposta padrao para dados');
             Planet = res.body.data;
             done();
         })
-    })
+    }).timeout(cTimeout)
 
     it('list', (done) => {
         req(url).get('')
